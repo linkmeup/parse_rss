@@ -2,14 +2,15 @@
 import re
 import requests
 import xmltodict
-import yaml
+import json
 from html.parser import HTMLParser
-from pprint import pprint
+from datetime import datetime
 
 class HTMLFilter(HTMLParser):
     text = ""
     def handle_data(self, data):
         self.text += data
+
 
 def get_podcast_kdpv(description):
     regexp = '<img src="(?P<img>.*?)"'
@@ -18,6 +19,7 @@ def get_podcast_kdpv(description):
     if match:
         if not "patreon" in match.group("img"):
             return match.group("img")
+
 
 def get_podcasts(rss):
     all_podcasts = []
@@ -56,9 +58,19 @@ def get_podcasts(rss):
                 this_podcast.update({"body": body})
 
                 all_podcasts.append(this_podcast)
+
     return all_podcasts
 
-r = requests.get("https://linkmeup.ru/rss/podcasts", verify=False)
-rss = xmltodict.parse(r.text)["rss"]
 
-all_podcasts = get_podcasts(rss)
+def main():
+    r = requests.get("https://linkmeup.ru/rss/podcasts", verify=False)
+    rss = xmltodict.parse(r.text)["rss"]
+
+    all_podcasts = get_podcasts(rss)
+
+    with open('all_podcasts.json', 'w') as f:
+        json.dump(all_podcasts, f)
+
+
+if __name__ == '__main__':
+    main()
