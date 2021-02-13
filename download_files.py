@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 import json
+import os
+import sys
 import uuid
 import requests
 
@@ -32,7 +34,18 @@ def download_file(url, file_name):
 
 
 def main():
-    with open('all_podcasts.json') as f:
+
+    # Trying to open all_podcasts_w_files.json
+    if os.path.exists('all_podcasts_w_files.json'):
+        all_podcasts = 'all_podcasts_w_files.json'
+    elif os.path.exists('all_podcasts.json'):
+        all_podcasts = 'all_podcasts.json'
+    else:
+        print('Files all_podcasts_w_files.json and all_podcasts.json do not exist.')
+        print('Exit')
+        sys.exit(1)
+
+    with open(all_podcasts) as f:
         podcasts = json.load(f)
 
     for podcast in podcasts:
@@ -51,7 +64,7 @@ def main():
             print('  Start downloading mp3...')
             episode_filenames = uuid.uuid4()
 
-            # download_file(podcast['podcast_url'], f'mp3/{episode_filenames}.mp3')
+            download_file(podcast['podcast_url'], f'mp3/{episode_filenames}.mp3')
             podcast.update({'mp3': f'mp3/{episode_filenames}.mp3'})
 
             print('    Finished.')
@@ -59,7 +72,7 @@ def main():
             if podcast.get('kdpv'):
                 print('  Start downloading img...')
                 img = f"img/{episode_filenames}.{podcast['kdpv'].split('.')[-1]}"
-                # download_file(podcast['kdpv'], img)
+                download_file(podcast['kdpv'], img)
                 podcast.update({'img': img})
                 print('    Finished.')
             else:
@@ -69,9 +82,11 @@ def main():
 
             with open('all_podcasts_w_files.json', 'w') as f:
                 json.dump(podcasts, f)
+        else:
+            print('  mp3 has already been downloaded')
 
     print('=' * 100)
-    print('Saved to all_podcasts_w_files.json')
+    print('Changes saved to all_podcasts_w_files.json')
 
 
 if __name__ == '__main__':
