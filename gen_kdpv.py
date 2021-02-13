@@ -2,6 +2,7 @@
 
 from PIL import Image, ImageDraw, ImageFont
 import os
+import sys
 import json
 
 FONT = 'Lato-Bold.ttf'
@@ -75,10 +76,10 @@ def main():
     # Trying to open all_podcasts_w_files.json
     if os.path.exists('all_podcasts_w_covers.json'):
         all_podcasts = 'all_podcasts_w_covers.json'
-    elif os.path.exists('all_podcasts_w_ytid.json'):
-        all_podcasts = 'all_podcasts_w_ytid.json'
+    elif os.path.exists('all_podcasts_w_files.json'):
+        all_podcasts = 'all_podcasts_w_files.json'
     else:
-        print('Files all_podcasts_w_covers.json and all_podcasts_w_ytid.json do not exist.')
+        print('Files all_podcasts_w_covers.json and all_podcasts_w_files.json do not exist.')
         print('Exit')
         sys.exit(1)
 
@@ -89,7 +90,7 @@ def main():
         print('-' * 100)
         print(podcast['title'])
         if podcast.get('cover'):
-            print('  Cover are already generated')
+            print('  Cover has already been generated')
             continue
 
         cover = Image.open(f'img/defaults/{podcast["category"]}.jpg')
