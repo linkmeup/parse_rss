@@ -57,7 +57,7 @@ def main():
         print(f'  {mp4}')
 
         cmd = f'ffmpeg -loop 1 -i {img} -i {mp3} -c:a copy -c:v libx264 -shortest {mp4}'
-        push = subprocess.Popen(cmd, shell=True, stdout = subprocess.PIPE)
+        run_cmd = subprocess.Popen(cmd, shell=True, stdout = subprocess.PIPE)
 
         input()
         # time.sleep(1800)
