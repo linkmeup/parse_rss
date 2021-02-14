@@ -19,7 +19,7 @@ Run the scripts in the following sequence:
 
 You also can run `check_files.py` with filename and item to check as arguments to check if all the files exist.  
 For example. 
-`./check_files.py all_podcasts_w_files.json img` will check if key 'img' exists for each podcast episode, if there is file named after 'img' and what is filesize.
+`./check_files.py all_podcasts_w_files.json img` will check if key *img* exists for each podcast episode, if there is file named after *img* and what is filesize.
 
 To bring the environment please install poetry and run `poetry install`. Than you can run scripts inside virtual env: `poetry run python get_podcasts.py`.
 
