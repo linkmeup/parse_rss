@@ -43,26 +43,26 @@ def main():
             input()
             continue
 
-        # if not os.path.exists(mp3):
-        #     print(f'  File {mp3} does not exist! Press any key to continue...')
-        #     input()
-        #     continue
+        if not os.path.exists(mp3):
+            print(f'  File {mp3} does not exist! Press any key to continue...')
+            input()
+            continue
 
-        # if not os.path.exists(cover):
-        #     print(f'  File {cover} does not exist! Press any key to continue...')
-        #     input()
-        #     continue
+        if not os.path.exists(cover):
+            print(f'  File {cover} does not exist! Press any key to continue...')
+            input()
+            continue
 
         mp4 = f'mp4/{mp3.split("/")[1].split(".")[0]}.mp4'
         print(f'  {mp4}')
 
         cmd = f'ffmpeg -loop 1 -i {cover} -i {mp3} -c:a copy -c:v libx264 -shortest {mp4}'
-        # run_cmd = subprocess.Popen(cmd, shell=True, stdout = subprocess.PIPE)
+        run_cmd = subprocess.Popen(cmd, shell=True, stdout = subprocess.PIPE)
 
 
-        # while True:
-        #     if psutil.Process(run_cmd.pid).status() == 'zombie':
-        #         break
+        while True:
+            if psutil.Process(run_cmd.pid).status() == 'zombie':
+                break
 
         podcast.update({"mp4": mp4})
         with open('all_podcasts_w_mp4.json', 'w') as f:
