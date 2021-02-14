@@ -2,6 +2,7 @@
 import json
 import copy
 import os
+import sys
 from googleapiclient.http import MediaFileUpload
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
@@ -79,7 +80,7 @@ def main():
 
 
     for podcast in podcasts[::-1]:
-        print('='*100)
+        print('-' * 100)
         print(podcast['title'])
 
         if podcast.get('youtube_id'):
@@ -97,7 +98,7 @@ def main():
         upload_body = copy.deepcopy(UPLOAD_BODY_TEMPLATE)
         upload_body['snippet']['title'] = podcast['title']
         upload_body['snippet']['description'] = podcast['body']
-        upload_body['snippet']['tags'].append(podcast['category'])
+        upload_body['snippet']['tags'].append(podcast['feed'])
 
         upload_body['status']['publishAt'] = podcast['publishAt']
 
@@ -117,8 +118,8 @@ def main():
 
         print('  all_podcasts_w_ytid.json updated')
 
-        if podcast['category'] in PLAYLIS_IDS:
-            playlist_id = PLAYLIS_IDS[podcast['category']]
+        if podcast['feed'] in PLAYLIS_IDS:
+            playlist_id = PLAYLIS_IDS[podcast['feed']]
         else:
             playlist_id = PLAYLIS_IDS['other']
 
@@ -129,7 +130,9 @@ def main():
         request = service.playlistItems().insert(part='snippet', body=playlist_body).execute()
 
         print('  Added to playlist')
-        input()
+
+    print('=' * 100)
+    print('Finished')
 
 
 if __name__ == '__main__':
