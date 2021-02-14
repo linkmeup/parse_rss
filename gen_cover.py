@@ -114,6 +114,7 @@ def main():
         with open('all_podcasts_w_covers.json', 'w') as f:
             json.dump(podcasts, f)
 
+    print('=' * 100)
     print('Finished')
 
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import json
 import copy
+import os
 from googleapiclient.http import MediaFileUpload
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
@@ -62,7 +63,18 @@ def get_authenticated_service():
 def main():
     service = get_authenticated_service()
 
-    with open('all_podcasts_w_pd.json') as f:
+
+    if os.path.exists('all_podcasts_w_ytid.json'):
+        all_podcasts = 'all_podcasts_w_ytid.json'
+    elif os.path.exists('all_podcasts_w_pd.json'):
+        all_podcasts = 'all_podcasts_w_pd.json'
+    else:
+        print('Files all_podcasts_w_ytid.json and all_podcasts_w_pd.json do not exist.')
+        print('Exit')
+        sys.exit(1)
+
+
+    with open(all_podcasts) as f:
         podcasts = json.load(f)
 
 
