@@ -80,7 +80,7 @@ def main():
                 podcast.update({'img': f"img/defaults/{get_feed(podcast['title'])}_img.png"})
                 print('    Finished.')
 
-            podcast.update({'category': get_feed(podcast['title'])})
+            podcast.update({'feed': get_feed(podcast['title'])})
 
             with open('all_podcasts_w_files.json', 'w') as f:
                 json.dump(podcasts, f)
