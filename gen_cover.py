@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, UnidentifiedImageError
 import os
 import sys
 import json
@@ -93,11 +93,16 @@ def main():
             print('  Cover has already been generated')
             continue
 
-        cover = Image.open(f'img/defaults/{podcast["category"]}.jpg')
+        cover = Image.open(f'img/defaults/{podcast["feed"]}.jpg')
         if podcast.get('img') and os.path.exists(podcast.get('img')):
-            img = prepare_img(Image.open(podcast['img'])).convert('RGBA')
+            try:
+                img = prepare_img(Image.open(podcast['img'])).convert('RGBA')
+            except UnidentifiedImageError as e:
+                print(f"  Can't open image {podcast['img']}. Continue with default")
+                input()
+                img = prepare_img(Image.open(f'img/defaults/{podcast["feed"]}_img.png')).convert('RGBA')
         else:
-            img = prepare_img(Image.open(f'img/defaults/{podcast["category"]}_img.png')).convert('RGBA')
+            img = prepare_img(Image.open(f'img/defaults/{podcast["feed"]}_img.png')).convert('RGBA')
 
         r, g, b, m = img.split()
         top = Image.merge("RGB", (r, g, b))
