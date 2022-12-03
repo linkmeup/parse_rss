@@ -42,6 +42,7 @@ def get_podcasts(rss):
                     elif head == 'itunes:summary':
                         short_description = podcast[head]
                     elif head == 'description':
+                        this_podcast.update({'description': podcast[head]})
                         img = get_podcast_kdpv(podcast[head])
                         if img:
                             this_podcast.update({'kdpv': img})
@@ -64,8 +65,9 @@ def get_podcasts(rss):
 
 def main():
     print('Start RSS parsing...')
-    r = requests.get('https://linkmeup.ru/rss/podcasts')
-    rss = xmltodict.parse(r.text)['rss']
+    # r = requests.get('https://linkmeup.ru/rss/podcasts')
+    with open("/Users/eucariot/Downloads/podcasts.rss") as f:
+        rss = xmltodict.parse(f.read())['rss']
 
     all_podcasts = get_podcasts(rss)
 
